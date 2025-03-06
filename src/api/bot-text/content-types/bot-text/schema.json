@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "bot_texts",
+  "info": {
+    "singularName": "bot-text",
+    "pluralName": "bot-texts",
+    "displayName": "Тексты для бота",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "texts": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

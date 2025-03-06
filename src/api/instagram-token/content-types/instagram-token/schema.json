@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "instagram_tokens",
+  "info": {
+    "singularName": "instagram-token",
+    "pluralName": "instagram-tokens",
+    "displayName": "Токен инстаграма"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "token": {
+      "type": "string"
+    },
+    "expire": {
+      "type": "datetime"
+    }
+  }
+}

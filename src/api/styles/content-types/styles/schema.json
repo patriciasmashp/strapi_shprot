@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "styleses",
+  "info": {
+    "singularName": "styles",
+    "pluralName": "styleses",
+    "displayName": "Стили"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "style_name": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string",
+      "unique": true,
+      "required": true
+    }
+  }
+}

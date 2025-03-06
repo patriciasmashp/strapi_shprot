@@ -1,0 +1,19 @@
+{
+  "kind": "singleType",
+  "collectionName": "bots_settings",
+  "info": {
+    "singularName": "bot-settings",
+    "pluralName": "bots-settings",
+    "displayName": "Настройки бота",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "settings": {
+      "type": "json"
+    }
+  }
+}
