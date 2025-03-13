@@ -15,11 +15,17 @@
     "@strapi/plugin-documentation": "^5.9.0",
     "@strapi/plugin-users-permissions": "5.9.0",
     "@strapi/strapi": "5.9.0",
+    "axios": "^1.8.3",
+    "grammy": "^1.35.0",
     "pg": "8.8.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-drag-drop-files": "^2.4.0",
     "react-router-dom": "^6.0.0",
-    "styled-components": "^6.0.0"
+    "react-simple-wysiwyg": "^3.2.0",
+    "strapi-sdk-js": "^3.0.0",
+    "styled-components": "^6.0.0",
+    "telegraf": "^3.30.1"
   },
   "engines": {
     "node": ">=18.0.0 <=22.x.x",
