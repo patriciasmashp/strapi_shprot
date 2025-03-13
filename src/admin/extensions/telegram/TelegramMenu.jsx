@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.css";
+import { Wrapper } from "./styles";
 import Editor from "react-simple-wysiwyg";
 import { Flex, Button, Box, Alert } from "@strapi/design-system";
 import { DropZone } from "./DropZone/DropZone";
@@ -107,6 +107,7 @@ export class TelegramMenu extends React.Component {
   }
   render() {
     return (
+      <Wrapper>
       <div style={{ margin: "5%", display: "flex" }}>
         <div className="strapi-block">
           <div style={{ margin: "auto" }}>
@@ -139,6 +140,7 @@ export class TelegramMenu extends React.Component {
           </Box>
         )}
       </div>
+      </Wrapper>
     );
   }
 }
