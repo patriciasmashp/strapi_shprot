@@ -700,6 +700,38 @@ export interface ApiStylesStyles extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiTokenVkTokenVk extends Struct.SingleTypeSchema {
+  collectionName: 'tokens_vks';
+  info: {
+    description: '';
+    displayName: '\u0422\u043E\u043A\u0435\u043D \u0412\u041A';
+    pluralName: 'tokens-vks';
+    singularName: 'token-vk';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    device_id: Schema.Attribute.Text;
+    expire_in: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::token-vk.token-vk'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    refreshToken: Schema.Attribute.Text;
+    token: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1216,6 +1248,7 @@ declare module '@strapi/strapi' {
       'api::instagram-token.instagram-token': ApiInstagramTokenInstagramToken;
       'api::master.master': ApiMasterMaster;
       'api::styles.styles': ApiStylesStyles;
+      'api::token-vk.token-vk': ApiTokenVkTokenVk;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

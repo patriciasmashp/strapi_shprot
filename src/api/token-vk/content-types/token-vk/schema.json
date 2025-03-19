@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "tokens_vks",
+  "info": {
+    "singularName": "token-vk",
+    "pluralName": "tokens-vks",
+    "displayName": "Токен ВК",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "token": {
+      "type": "text"
+    },
+    "refreshToken": {
+      "type": "text"
+    },
+    "expire_in": {
+      "type": "datetime"
+    },
+    "device_id": {
+      "type": "text"
+    }
+  }
+}
