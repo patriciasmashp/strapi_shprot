@@ -71,7 +71,7 @@ export class TelegramMenu extends React.Component {
       });
     }
 
-    const result = await axios.post("/api/telegram/sendMessage", formData, {
+    const result = await axios.post("/api/telegram/allert", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

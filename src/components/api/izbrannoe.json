@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_api_izbrannoe",
+  "info": {
+    "displayName": "избранное",
+    "icon": "alien"
+  },
+  "options": {},
+  "attributes": {
+    "date": {
+      "type": "date"
+    },
+    "masters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::master.master"
+    }
+  }
+}

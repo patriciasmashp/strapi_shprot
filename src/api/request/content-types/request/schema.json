@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "requests",
+  "info": {
+    "singularName": "request",
+    "pluralName": "requests",
+    "displayName": "Заявки"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "master": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::master.master"
+    },
+    "client": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::client.client"
+    },
+    "TypeOfRequest": {
+      "type": "enumeration",
+      "enum": [
+        "Звонок",
+        "WhatsApp",
+        "Telegram"
+      ],
+      "default": "Звонок"
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
