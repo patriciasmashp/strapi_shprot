@@ -13,4 +13,5 @@ module.exports = createCoreService('api::bot-settings.bot-settings', ({ strapi }
 
         return response.settings.request_cost
     },
+
 }));

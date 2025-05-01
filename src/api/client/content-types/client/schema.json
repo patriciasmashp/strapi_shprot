@@ -26,11 +26,6 @@
         }
       }
     },
-    "city": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::city.city"
-    },
     "favorites_by_date": {
       "displayName": "избранное",
       "type": "component",
@@ -50,6 +45,11 @@
       },
       "type": "string",
       "required": true
+    },
+    "city": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::city.city"
     }
   }
 }

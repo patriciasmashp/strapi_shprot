@@ -8,7 +8,9 @@ const telegramApiService = ({ strapi }) => ({
 
     if (Object.keys(files).length > 0) {
       if (Object.keys(files).length == 1) {
-        const file = new InputFile(files[0].filepath)
+        console.log(files[0]);
+
+        const file = new InputFile(files[0])
         await bot.api.sendPhoto(chatId, file, {
           caption: message,
           parse_mode: 'HTML'
@@ -19,15 +21,15 @@ const telegramApiService = ({ strapi }) => ({
 
         Object.values(files).forEach(file => {
           if (file.mimetype.startsWith('image')) {
-            const media = InputMediaBuilder.photo(new InputFile(file.filepath))
+            const media = InputMediaBuilder.photo(new InputFile(file))
             medias.push(media)
           }
           else if (file.mimetype.startsWith('video')) {
-            const media = InputMediaBuilder.video(new InputFile(file.filepath))
+            const media = InputMediaBuilder.video(new InputFile(file))
             medias.push(media)
           }
           else {
-            const media = InputMediaBuilder.document(new InputFile(file.filepath))
+            const media = InputMediaBuilder.document(new InputFile(file))
             medias.push(media)
           }
         });
