@@ -586,6 +586,32 @@ export interface ApiInstagramTokenInstagramToken
   };
 }
 
+export interface ApiLikeLike extends Struct.CollectionTypeSchema {
+  collectionName: 'likes';
+  info: {
+    displayName: '\u041B\u0430\u0439\u043A\u0438';
+    pluralName: 'likes';
+    singularName: 'like';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::like.like'> &
+      Schema.Attribute.Private;
+    master: Schema.Attribute.Relation<'oneToOne', 'api::master.master'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMasterMaster extends Struct.CollectionTypeSchema {
   collectionName: 'masters';
   info: {
@@ -610,6 +636,20 @@ export interface ApiMasterMaster extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    aboutRequestCount: Schema.Attribute.Integer &
+      Schema.Attribute.Private &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     balance: Schema.Attribute.Integer &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1363,6 +1403,7 @@ declare module '@strapi/strapi' {
       'api::city.city': ApiCityCity;
       'api::client.client': ApiClientClient;
       'api::instagram-token.instagram-token': ApiInstagramTokenInstagramToken;
+      'api::like.like': ApiLikeLike;
       'api::master.master': ApiMasterMaster;
       'api::report.report': ApiReportReport;
       'api::request.request': ApiRequestRequest;
