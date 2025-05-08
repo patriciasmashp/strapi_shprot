@@ -4,7 +4,8 @@
   "info": {
     "singularName": "request",
     "pluralName": "requests",
-    "displayName": "Заявки"
+    "displayName": "Заявки",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -33,6 +34,10 @@
     "phone": {
       "type": "string",
       "required": true
+    },
+    "received": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -789,6 +789,7 @@ export interface ApiReportReport extends Struct.CollectionTypeSchema {
 export interface ApiRequestRequest extends Struct.CollectionTypeSchema {
   collectionName: 'requests';
   info: {
+    description: '';
     displayName: '\u0417\u0430\u044F\u0432\u043A\u0438';
     pluralName: 'requests';
     singularName: 'request';
@@ -810,6 +811,7 @@ export interface ApiRequestRequest extends Struct.CollectionTypeSchema {
     master: Schema.Attribute.Relation<'oneToOne', 'api::master.master'>;
     phone: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    received: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     TypeOfRequest: Schema.Attribute.Enumeration<
       ['\u0417\u0432\u043E\u043D\u043E\u043A', 'WhatsApp', 'Telegram']
     > &
