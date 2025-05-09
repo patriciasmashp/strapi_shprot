@@ -1,0 +1,46 @@
+module.exports = {
+    /**
+     * Simple example.
+     * Every monday at 1am.
+     */
+
+    rankMasters: {
+        task: async ({ strapi }) => {
+            const masters = await strapi.documents("api::master.master").findMany()
+            const { like_rank_weight,
+                post_rank_weight,
+                index_rank_weight,
+                share_rank_weight,
+                request_rank_weight,
+                about_master_rank_weight
+            } = await strapi.service("api::bot-settings.bot-settings").getRankWeights()
+            for (let index = 0; index < masters.length; index++) {
+                const master = masters[index];
+                const rank = master.aboutRequestCount * about_master_rank_weight
+                 + master.requestCount * request_rank_weight 
+                 + master.shareCount * share_rank_weight
+                 + master.likes * like_rank_weight
+                 + master.postCount * post_rank_weight
+                 + master.index * index_rank_weight * 2
+
+                await strapi.documents("api::master.master").update({
+                    documentId: master.documentId,
+                    data: {
+                        rank: rank
+                    }
+                })
+
+
+            }
+
+
+
+        },
+        options: {
+            // rule: "0 0 0 * * 3",
+            start: new Date(Date.now()),
+            // end 20 seconds from now
+            // end: new Date(Date.now()),
+        },
+    },
+};

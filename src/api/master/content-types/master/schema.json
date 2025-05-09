@@ -167,6 +167,53 @@
       "min": 0,
       "default": 0,
       "private": true
+    },
+    "requestCount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "private": true,
+      "default": 0
+    },
+    "shareCount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "private": true,
+      "default": 0
+    },
+    "postCount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "private": true
+    },
+    "index": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "default": 0,
+      "private": true
+    },
+    "rank": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "float"
     }
   }
 }

@@ -13,5 +13,10 @@ module.exports = createCoreService('api::bot-settings.bot-settings', ({ strapi }
 
         return response.settings.request_cost
     },
+    async getRankWeights(...args) {
+        const response = await strapi.documents('api::bot-settings.bot-settings').findFirst({})
+        
+        return response.settings.rank_weights
+    },
 
 }));
