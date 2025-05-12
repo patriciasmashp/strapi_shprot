@@ -8,8 +8,6 @@ const telegramApiService = ({ strapi }) => ({
 
     if (Object.keys(files).length > 0) {
       if (Object.keys(files).length == 1) {
-        console.log(files[0]);
-
         const file = new InputFile(files[0])
         await bot.api.sendPhoto(chatId, file, {
           caption: message,

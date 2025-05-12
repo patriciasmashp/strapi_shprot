@@ -12,14 +12,12 @@ module.exports = createCoreController('api::master.master', ({ strapi }) => ({
       const filesData = ctx.request.files
       const bot = new Bot(process.env.BOT_TOKEN)
       
-      const files = []
-      Object.keys(filesData).map((key) => files.push(filesData[key].filePath))
-      console.log( filesData);
       
+      const files = []
+      Object.keys(filesData).map((key) => files.push(filesData[key].filepath))
+      console.log(files);
       const masters = await strapi.documents("api::master.master").findMany();
 
-      console.log(files);
-      return
       masters.forEach(async (master) => {
         strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, message, master.master_id, files).catch(err => {
           errors.push(err.description);

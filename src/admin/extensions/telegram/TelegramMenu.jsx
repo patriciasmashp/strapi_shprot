@@ -1,6 +1,6 @@
 import React from "react";
 import { Wrapper } from "./styles";
-import Editor from "react-simple-wysiwyg";
+import { Textarea } from '@strapi/design-system';
 import { Flex, Button, Box, Alert } from "@strapi/design-system";
 import { DropZone } from "./DropZone/DropZone";
 import { CardElement } from "./CardElement";
@@ -76,9 +76,6 @@ export class TelegramMenu extends React.Component {
         "Content-Type": "multipart/form-data",
       },
     })
-
-    
-    console.log(result);
     
     if (result.status == 200) {
       this.setState({
@@ -113,9 +110,9 @@ export class TelegramMenu extends React.Component {
           <div style={{ margin: "auto" }}>
             <DropZone files={this.state.files} onDrop={this.onDrop} />
           </div>
-          <Editor
+          <Textarea
             value={this.state.html}
-            containerProps={{ style: { resize: "vertical" } }}
+            className="strapi-textarea"
             onChange={this.onChange}
           />
           <div style={{ textAlign: "center", margin: "10px" }}>

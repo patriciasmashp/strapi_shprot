@@ -34,4 +34,8 @@ export const Wrapper = styled.div`
     z-index: 700;
     position: fixed;
   }
+
+  .strapi-textarea {
+    min-width: 640px;
+  }
 `;
