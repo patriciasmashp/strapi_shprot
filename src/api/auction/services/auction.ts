@@ -31,14 +31,17 @@ export default factories.createCoreService('api::auction.auction', ({ strapi }) 
         if (!master || !auction) {
             return false
         }
-
+        const response = auction.masterResponses.find(r => r.master.id === master.id)
         const bot = new Bot(process.env.BOT_TOKEN)
         let text = await strapi.service('api::bot-text.bot-text').getText('auction_sent_contact_master')
         text += `\n\nКонтакты клиента: @${auction.client.username}\nАукцион: ${auction.bodyPart}`
         console.log(auction.type);
         
         if (auction.type === AuctionTypesEnum.priceAuction && auction.price) {
-         text += `\nЦена: ${auction.price} ₽`   
+         text += `\nБюджет: ${auction.price} ₽`   
+        }
+        else{
+            text += `\nВаша цена: ${response.price} ₽`
         }
         let files = {}
         if (auction.file) {

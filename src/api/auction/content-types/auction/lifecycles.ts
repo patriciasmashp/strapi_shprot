@@ -1,4 +1,4 @@
-import { AuctionFactory } from "../../classes/AuctionFactory";
+import AuctionFactory  from "../../classes/AuctionFactory";
 
 
 

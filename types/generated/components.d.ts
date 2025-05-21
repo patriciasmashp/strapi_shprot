@@ -20,6 +20,7 @@ export interface ApiOtklikiMasterov extends Struct.ComponentSchema {
     icon: 'bell';
   };
   attributes: {
+    clientChoice: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     master: Schema.Attribute.Relation<'oneToOne', 'api::master.master'>;
     price: Schema.Attribute.Integer &
       Schema.Attribute.SetMinMax<

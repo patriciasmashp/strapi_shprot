@@ -1,6 +1,7 @@
 import { Data } from "@strapi/strapi";
 import { AuctionSettings, MessageIds } from "../Ifaces/IAuction";
 import { auctionQueue } from "./Queue";
+import { Bot, InlineKeyboard } from "grammy";
 
 
 
@@ -38,5 +39,29 @@ export abstract class AbstractAuction {
     public async startAuction() {
         const messages = await this.alertMasters()
         await this.setJob(messages)
+    }
+
+    public async setClientChoice(master: Data.ContentType<'api::master.master'>) {
+        const masterResponses = this.auctuionData.masterResponses
+        masterResponses.filter(response => response.master.id === master.id)[0].clientChoice = true
+        await strapi.documents('api::auction.auction')
+            .update({ documentId: this.auctuionData.documentId, data: { masterResponses: masterResponses } })
+    }
+    private async notifyClientEndAuction() {
+        const bot = new Bot(process.env.CLIENT_BOT_TOKEN)
+        this.auctuionData.client.client_id
+        const text = await strapi.service('api::bot-text.bot-text').getText('auction_finished')
+        const keyboard = new InlineKeyboard().webApp("Посмотреть", `${process.env.WEB_APP_URL}/auction`)
+        await strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, text, this.auctuionData.client.client_id, {}, keyboard)
+    }
+    public async endAuction() {
+        const created = new Date(this.auctuionData.createdAt)
+        const finishTime = created.getTime() + this.settings.life_time
+
+        if (new Date().getTime() >= finishTime) {
+            await strapi.documents('api::auction.auction')
+                .update({ documentId: this.auctuionData.documentId, data: { finished: true } })
+            await this.notifyClientEndAuction()
+        }
     }
 }

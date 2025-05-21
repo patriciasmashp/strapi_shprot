@@ -25,4 +25,10 @@ module.exports = createCoreService('api::bot-settings.bot-settings', ({ strapi }
         return response.settings.auction_settings
     },
 
+    async getBotInfo(token){
+        const bot = new Bot(token)
+        return bot.getMe()
+    
+    }
+
 }));

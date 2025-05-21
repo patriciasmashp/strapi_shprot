@@ -1,15 +1,14 @@
-import { ApiAuctionAuction } from "@stypes/contentTypes";
 import { AuctionTypesEnum } from "../enums";
 import { sketchAuction as SketchAuction } from "./SketchAuiction";
-import { Data } from "@strapi/strapi";
+// import { Data } from "@strapi/strapi";
 import { PriceAuction } from "./PriceAuction";
 import { AuctionSettings, IAuction } from "../Ifaces/IAuction";
 
 
-export class AuctionFactory {
-    auction: Data.ContentType<'api::auction.auction'>;
+export default class AuctionFactory {
+    auction:any;
 
-    constructor(auction: Data.ContentType<'api::auction.auction'>) {
+    constructor(auction:any) {
         this.auction = auction;
     }
 

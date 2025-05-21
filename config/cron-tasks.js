@@ -1,3 +1,5 @@
+const { Bot, InlineKeyboard } = require("grammy");
+
 module.exports = {
     /**
      * Simple example.
@@ -50,17 +52,24 @@ module.exports = {
             const auctions = await strapi.documents('api::auction.auction').findMany({
                 filters: {
                     finished: { $eq: false }
-                }
+                },
+                populate: ['client']
             })
+            console.log('auction');
             const auctionSettings = await strapi.service('api::bot-settings.bot-settings').getAuctionSettings()
 
             for (let auction of auctions) {
                 const created = new Date(auction.createdAt)
                 const finishTime = created.getTime() + auctionSettings.life_time
-
+                
                 if (new Date() > finishTime) {
                     console.log(auction.documentId, 'closed');
                     await strapi.documents('api::auction.auction').update({ documentId: auction.documentId, data: { finished: true } })
+                    const bot = new Bot(process.env.CLIENT_BOT_TOKEN)
+                    
+                    const text = await strapi.service('api::bot-text.bot-text').getText('auction_finished')
+                    const keyboard = new InlineKeyboard().webApp("Посмотреть", `${process.env.WEB_APP_URL}/auction`)
+                    await strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, text, auction.client.client_id, {}, keyboard)
                 }
 
 
@@ -69,8 +78,8 @@ module.exports = {
 
         },
         options: {
-            rule: "* 1 * * * *",
-            // start: new Date(Date.now()),
+            // rule: "* 1 * * * *",
+            start: new Date(Date.now()),
             // end 20 seconds from now
             // end: new Date(Date.now()),
         },

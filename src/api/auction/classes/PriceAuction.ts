@@ -1,11 +1,11 @@
-import { Data } from "@strapi/strapi";
+// import { Data } from "@strapi/strapi";
 import { AuctionSettings, IAuction, MessageIds } from "../Ifaces/IAuction";
 import { AbstractAuction } from "./AbstractAuction";
 import { Bot, InlineKeyboard } from "grammy";
 
 export class PriceAuction extends AbstractAuction implements IAuction {
 
-    constructor(auctuionData: Data.ContentType<'api::auction.auction'>, settings: AuctionSettings) {
+    constructor(auctuionData: any, settings: AuctionSettings) {
         super(auctuionData, settings)
     }
     public async alertMasters(): Promise<MessageIds> {
@@ -13,7 +13,9 @@ export class PriceAuction extends AbstractAuction implements IAuction {
         const price = this.settings.responce_price
         const text = "Дорогой мастер, мы нашли клиента c конкретным бюджетом," +
             "\nты и другие мастера можете взяться за этот проект либо отказаться от него." +
-            "\nПользователь ознакомится портфолио откликнувшихся мастеров и выберет наиболее подходящего ему мастера." +
+            "\nПользователь ознакомится портфолио c откликнувшихся мастеров и выберет наиболее подходящего ему мастера." +
+            `\n\nОписание аукциона: ${this.auctuionData.idea}` +
+            `\nБюджет: ${this.auctuionData.price} ₽` +
             `\n\nСтоимость участия: ${price}`
 
         const textEnoughBalance = "Дорогой мастер, мы нашли клиента," +

@@ -2,8 +2,7 @@ import { Data } from "@strapi/strapi";
 import { AuctionSettings, IAuction, MessageIds } from "../Ifaces/IAuction";
 import { AbstractAuction } from "./AbstractAuction";
 import { Bot, InlineKeyboard } from "grammy";
-import "./Queue"
-import { auctionQueue } from "./Queue";
+
 
 export class sketchAuction extends AbstractAuction implements IAuction {
 
@@ -16,6 +15,7 @@ export class sketchAuction extends AbstractAuction implements IAuction {
         const text = "Дорогой мастер, мы нашли клиента, ты и другие мастера можете оценить его идею." +
             "\nТату-аукцион закрытый, поэтому не ставь очень низкую цену, оценивай реальную стоимость." +
             "А пользователь выберет наиболее подходящего ему мастера." +
+            `\n\n Описание аукциона: ${this.auctuionData.idea}` +
             `\n\nСтоимость участия: ${price}`
 
          const textEnoughBalance = "Дорогой мастер, мы нашли клиента," +

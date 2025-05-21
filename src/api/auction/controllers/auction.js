@@ -1,5 +1,6 @@
 'use strict';
 
+const { default: AuctionFactory } = require('../classes/AuctionFactory');
 const { AuctionValidator } = require('../classes/AuctionValidator');
 
 /**
@@ -73,17 +74,20 @@ module.exports = createCoreController('api::auction.auction', ({ strapi }) => ({
             return ctx.badRequest('Auction and master requied')
         }
 
-        const auction = await strapi.documents('api::auction.auction')
-            .findOne({ documentId: auctionDocumentId, populate: ["client", "file"] })
+        const auctionData = await strapi.documents('api::auction.auction')
+            .findOne({ documentId: auctionDocumentId, populate: ["client", "file", "masterResponses", "masterResponses.master"] })
 
         const master = await strapi.documents('api::master.master')
             .findOne({ documentId: masterDocumentId })
 
-        if (!auction || !master) {
+        if (!auctionData || !master) {
             return ctx.badRequest('Auction or master not found')
         }
 
-        const success = await strapi.service('api::auction.auction').notifyMasterSelectedByClient(auction, master)
+        const auctionFactory = new AuctionFactory(auctionData)
+        const auction = await auctionFactory.createAuction(auctionData.type)
+        await auction.setClientChoice(master)
+        const success = await strapi.service('api::auction.auction').notifyMasterSelectedByClient(auctionData, master)
 
         if (success) {
             await strapi.service('api::auction.auction').updateMasterAuctionStatistic(master)
