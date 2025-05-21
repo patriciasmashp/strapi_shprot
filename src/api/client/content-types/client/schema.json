@@ -50,6 +50,22 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::city.city"
+    },
+    "auctions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::auction.auction",
+      "mappedBy": "client"
+    },
+    "banned": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "boolean",
+      "default": false,
+      "required": false
     }
   }
 }

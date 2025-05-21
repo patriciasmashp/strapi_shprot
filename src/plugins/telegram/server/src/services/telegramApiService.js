@@ -9,10 +9,12 @@ const telegramApiService = ({ strapi }) => ({
     if (Object.keys(files).length > 0) {
       if (Object.keys(files).length == 1) {
         const file = new InputFile(files[0])
-        await bot.api.sendPhoto(chatId, file, {
+        const success = await bot.api.sendPhoto(chatId, file, {
           caption: message,
+          reply_markup: keyboard,
           parse_mode: 'HTML'
         })
+        return success
       }
       else {
         let medias = []
@@ -36,20 +38,21 @@ const telegramApiService = ({ strapi }) => ({
         medias[0].parse_mode = "HTML"
 
 
-        await bot.api.sendMediaGroup(chatId, medias)
-        // console.log(success);
+        const success = await bot.api.sendMediaGroup(chatId, medias)
+
+        return success
 
       }
     }
     else {
 
-      await bot.api.sendMessage(chatId, message, {
+      const success = await bot.api.sendMessage(chatId, message, {
         parse_mode: 'HTML',
         reply_markup: keyboard
       })
+      return success
     }
   }
-
 }
 );
 

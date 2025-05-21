@@ -122,7 +122,8 @@
           "localized": true
         }
       },
-      "type": "biginteger"
+      "type": "biginteger",
+      "unique": true
     },
     "validated": {
       "pluginOptions": {
@@ -214,6 +215,16 @@
         }
       },
       "type": "float"
+    },
+    "auctionCount": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "integer",
+      "default": 0,
+      "private": true
     }
   }
 }

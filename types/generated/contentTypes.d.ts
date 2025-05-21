@@ -395,6 +395,63 @@ export interface ApiAdminAdmin extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiAuctionAuction extends Struct.CollectionTypeSchema {
+  collectionName: 'auctions';
+  info: {
+    description: '';
+    displayName: '\u0410\u0443\u043A\u0446\u0438\u043E\u043D\u044B';
+    pluralName: 'auctions';
+    singularName: 'auction';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    bodyPart: Schema.Attribute.String & Schema.Attribute.Required;
+    city: Schema.Attribute.Relation<'oneToOne', 'api::city.city'>;
+    client: Schema.Attribute.Relation<'manyToOne', 'api::client.client'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    file: Schema.Attribute.Media<'images' | 'files'>;
+    finished: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<false>;
+    idea: Schema.Attribute.Text & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::auction.auction'
+    > &
+      Schema.Attribute.Private;
+    masterResponses: Schema.Attribute.Component<'api.otkliki-masterov', true>;
+    price: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+    publishedAt: Schema.Attribute.DateTime;
+    size: Schema.Attribute.Enumeration<
+      [
+        '\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F',
+        '\u0421\u0440\u0435\u0434\u043D\u044F\u044F',
+        '\u0411\u043E\u043B\u044C\u0448\u0430\u044F',
+        '\u0411\u043E\u043B\u044C\u0448\u043E\u0439 \u043F\u0440\u043E\u0435\u043A\u0442',
+      ]
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F'>;
+    type: Schema.Attribute.Enumeration<['sketchAuction', 'priceAuction']> &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiBotSettingsBotSettings extends Struct.SingleTypeSchema {
   collectionName: 'bots_settings';
   info: {
@@ -522,6 +579,14 @@ export interface ApiClientClient extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    auctions: Schema.Attribute.Relation<'oneToMany', 'api::auction.auction'>;
+    banned: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
     city: Schema.Attribute.Relation<'oneToOne', 'api::city.city'>;
     client_id: Schema.Attribute.BigInteger &
       Schema.Attribute.Required &
@@ -650,6 +715,14 @@ export interface ApiMasterMaster extends Struct.CollectionTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<0>;
+    auctionCount: Schema.Attribute.Integer &
+      Schema.Attribute.Private &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
     balance: Schema.Attribute.Integer &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -701,6 +774,7 @@ export interface ApiMasterMaster extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::master.master'>;
     master_id: Schema.Attribute.BigInteger &
+      Schema.Attribute.Unique &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1437,6 +1511,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::admin.admin': ApiAdminAdmin;
+      'api::auction.auction': ApiAuctionAuction;
       'api::bot-settings.bot-settings': ApiBotSettingsBotSettings;
       'api::bot-text.bot-text': ApiBotTextBotText;
       'api::city.city': ApiCityCity;

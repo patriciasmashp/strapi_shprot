@@ -1,0 +1,80 @@
+{
+  "kind": "collectionType",
+  "collectionName": "auctions",
+  "info": {
+    "singularName": "auction",
+    "pluralName": "auctions",
+    "displayName": "Аукционы",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::client.client",
+      "inversedBy": "auctions"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "sketchAuction",
+        "priceAuction"
+      ],
+      "required": true
+    },
+    "price": {
+      "type": "integer",
+      "min": 0,
+      "default": 1
+    },
+    "city": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::city.city"
+    },
+    "bodyPart": {
+      "type": "string",
+      "required": true
+    },
+    "size": {
+      "type": "enumeration",
+      "enum": [
+        "Маленькая",
+        "Средняя",
+        "Большая",
+        "Большой проект"
+      ],
+      "default": "Маленькая",
+      "required": true
+    },
+    "idea": {
+      "type": "text",
+      "required": true
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "masterResponses": {
+      "displayName": "Отклики мастеров",
+      "type": "component",
+      "repeatable": true,
+      "component": "api.otkliki-masterov",
+      "required": false
+    },
+    "finished": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    }
+  }
+}

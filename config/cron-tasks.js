@@ -12,16 +12,18 @@ module.exports = {
                 index_rank_weight,
                 share_rank_weight,
                 request_rank_weight,
-                about_master_rank_weight
+                about_master_rank_weight,
+                auction_rank_weight
             } = await strapi.service("api::bot-settings.bot-settings").getRankWeights()
             for (let index = 0; index < masters.length; index++) {
                 const master = masters[index];
                 const rank = master.aboutRequestCount * about_master_rank_weight
-                 + master.requestCount * request_rank_weight 
-                 + master.shareCount * share_rank_weight
-                 + master.likes * like_rank_weight
-                 + master.postCount * post_rank_weight
-                 + master.index * index_rank_weight * 2
+                    + master.requestCount * request_rank_weight
+                    + master.shareCount * share_rank_weight
+                    + master.likes * like_rank_weight
+                    + master.postCount * post_rank_weight
+                    + master.auctionCount * auction_rank_weight
+                    + master.index * index_rank_weight * 2
 
                 await strapi.documents("api::master.master").update({
                     documentId: master.documentId,
@@ -43,4 +45,34 @@ module.exports = {
             // end: new Date(Date.now()),
         },
     },
+    closeAuctions: {
+        task: async ({ strapi }) => {
+            const auctions = await strapi.documents('api::auction.auction').findMany({
+                filters: {
+                    finished: { $eq: false }
+                }
+            })
+            const auctionSettings = await strapi.service('api::bot-settings.bot-settings').getAuctionSettings()
+
+            for (let auction of auctions) {
+                const created = new Date(auction.createdAt)
+                const finishTime = created.getTime() + auctionSettings.life_time
+
+                if (new Date() > finishTime) {
+                    console.log(auction.documentId, 'closed');
+                    await strapi.documents('api::auction.auction').update({ documentId: auction.documentId, data: { finished: true } })
+                }
+
+
+
+            }
+
+        },
+        options: {
+            rule: "* 1 * * * *",
+            // start: new Date(Date.now()),
+            // end 20 seconds from now
+            // end: new Date(Date.now()),
+        },
+    }
 };

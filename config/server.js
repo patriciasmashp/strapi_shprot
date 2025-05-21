@@ -16,4 +16,10 @@ module.exports = ({ env }) => ({
   webhooks: {
     populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false),
   },
+  redis: {
+    host: 'localhost',
+    port: 6379,
+    maxRetriesPerRequest: null,
+    connectTimeout: 180000
+  }
 });

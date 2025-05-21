@@ -19,4 +19,10 @@ module.exports = createCoreService('api::bot-settings.bot-settings', ({ strapi }
         return response.settings.rank_weights
     },
 
+    async getAuctionSettings(...args) {
+        const response = await strapi.documents('api::bot-settings.bot-settings').findFirst({})
+        
+        return response.settings.auction_settings
+    },
+
 }));
