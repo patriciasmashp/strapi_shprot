@@ -6,6 +6,7 @@ import { Bot, InlineKeyboard } from "grammy";
 
 
 export abstract class AbstractAuction {
+
     auctuionData: Data.ContentType<'api::auction.auction'>;
     settings: AuctionSettings
 
@@ -38,6 +39,8 @@ export abstract class AbstractAuction {
 
     public async startAuction() {
         const messages = await this.alertMasters()
+        console.log(messages);
+        
         await this.setJob(messages)
     }
 

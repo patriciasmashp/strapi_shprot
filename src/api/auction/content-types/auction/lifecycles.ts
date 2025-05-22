@@ -25,13 +25,13 @@ export default {
         setTimeout(async () => {
             const auctionData = await strapi.documents('api::auction.auction')
             .findOne({documentId: result.documentId, populate: ['file', 'client', 'city', 'masterResponses', 'masterResponses.master']})
-            console.log(auctionData);
+     
             
             const factory = new AuctionFactory(auctionData);
             const auction = await factory.createAuction(result.type);
             await auction.startAuction();
         },
-        5000
+        10000
     )
 
 

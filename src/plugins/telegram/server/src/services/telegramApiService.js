@@ -20,22 +20,23 @@ const telegramApiService = ({ strapi }) => ({
         let medias = []
 
         Object.values(files).forEach(file => {
-          if (file.mimetype.startsWith('image')) {
+          // if (file.mimetype.startsWith('image')) {
             const media = InputMediaBuilder.photo(new InputFile(file))
             medias.push(media)
-          }
-          else if (file.mimetype.startsWith('video')) {
-            const media = InputMediaBuilder.video(new InputFile(file))
-            medias.push(media)
-          }
-          else {
-            const media = InputMediaBuilder.document(new InputFile(file))
-            medias.push(media)
-          }
+          // }
+          // else if (file.mimetype.startsWith('video')) {
+          //   const media = InputMediaBuilder.video(new InputFile(file))
+          //   medias.push(media)
+          // }
+          // else {
+          //   const media = InputMediaBuilder.document(new InputFile(file))
+          //   medias.push(media)
+          // }
         });
 
         medias[0].caption = message
         medias[0].parse_mode = "HTML"
+        // medias[0].reply_markup = keyboard
 
 
         const success = await bot.api.sendMediaGroup(chatId, medias)

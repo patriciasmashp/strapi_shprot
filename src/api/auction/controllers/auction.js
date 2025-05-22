@@ -20,19 +20,23 @@ module.exports = createCoreController('api::auction.auction', ({ strapi }) => ({
 
             return ctx.badRequest(valid.message);
         }
-        const { data, meta } = await super.create(ctx);
 
-        const file = ctx.request.files.file;
+        let filesUploaded = undefined;
 
-        if (file) {
-            let fiileUploaded = await strapi.plugins.upload.services.upload.upload(
+        if (ctx.request.files['file[]']) {
+
+            filesUploaded = await strapi.plugins.upload.services.upload.upload(
                 {
                     data: {},
-                    files: file
+                    files: ctx.request.files['file[]']
                 }
             )
+        }
+        const { data, meta } = await super.create(ctx);
+
+        if (filesUploaded) {
             await strapi.documents('api::auction.auction')
-                .update({ documentId: data.documentId, data: { file: fiileUploaded[0] }, populate: ['file'] })
+                .update({ documentId: data.documentId, data: { file: filesUploaded }, populate: ['file'] })
         }
 
 

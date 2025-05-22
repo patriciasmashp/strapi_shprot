@@ -413,7 +413,7 @@ export interface ApiAuctionAuction extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    file: Schema.Attribute.Media<'images' | 'files'>;
+    file: Schema.Attribute.Media<'images' | 'files', true>;
     finished: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<false>;

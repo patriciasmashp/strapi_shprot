@@ -5,59 +5,75 @@ import { Bot, InlineKeyboard } from "grammy";
 
 
 export class sketchAuction extends AbstractAuction implements IAuction {
+    private bot: Bot;
+    private text: string;
+    private textEnoughBalance: string;
+    private keyboard: InlineKeyboard;
+    private keyboardEnoughBalance: InlineKeyboard;
 
     constructor(auctuionData: Data.ContentType<'api::auction.auction'>, settings: AuctionSettings) {
         super(auctuionData, settings)
-    }
-    public async alertMasters(): Promise<MessageIds> {
-
         const price = this.settings.responce_price
-        const text = "Дорогой мастер, мы нашли клиента, ты и другие мастера можете оценить его идею." +
+        this.text = "Дорогой мастер, мы нашли клиента, ты и другие мастера можете оценить его идею." +
             "\nТату-аукцион закрытый, поэтому не ставь очень низкую цену, оценивай реальную стоимость." +
             "А пользователь выберет наиболее подходящего ему мастера." +
-            `\n\n Описание аукциона: ${this.auctuionData.idea}` +
+            `\n\nОписание аукциона: ${this.auctuionData.idea}` +
             `\n\nСтоимость участия: ${price}`
 
-         const textEnoughBalance = "Дорогой мастер, мы нашли клиента," +
+        this.textEnoughBalance = "Дорогой мастер, мы нашли клиента," +
             " но к сожалению твой текущий баланс не позволит принять участие в тату-аукционе." +
             "\nНо ты можешь ознакомиться с тем, как это исправить ниже нажав на кнопку."
 
-        const keyboard = new InlineKeyboard().text("да", `auction_response_price_y_${this.auctuionData.documentId}`)
+        this.keyboard = new InlineKeyboard().text("да", `auction_response_price_y_${this.auctuionData.documentId}`)
             .text("нет", `auction_price_n_${this.auctuionData.documentId}`).row()
-        const keyboardEnoughBalance = new InlineKeyboard().text("Как пополнить баланас",
+        this.keyboardEnoughBalance = new InlineKeyboard().text("Как пополнить баланас",
             `auction_balance_help_${this.auctuionData.documentId}`)
-
+        this.bot = new Bot(process.env.BOT_TOKEN)
+    }
+    public async alertMasters(): Promise<MessageIds> {
         const masters = await this.filterMasters()
         const rootDir = process.cwd();
-        
+
         let files = {}
-        
-        if(this.auctuionData.file){
-            files = {0: `${rootDir}/public${this.auctuionData.file.url}`}
+
+        if (this.auctuionData.file) {
+            for (let index = 0; index < this.auctuionData.file.length; index++) {
+                const file = this.auctuionData.file[index];
+                files[index] = `${rootDir}/public${file.url}`
+            }
         }
 
-        const bot = new Bot(process.env.BOT_TOKEN)
-
-        
         const messages = {}
 
         for (let master of masters) {
             let enoughBalance = master.balance - this.settings.responce_price >= 0
-
             try {
                 if (enoughBalance) {
-                    const message = await strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, text, master.master_id, files, keyboard)
-                    messages[message.chat.id] = message.message_id
+                    if (this.auctuionData.file) {
+                        await strapi.service('plugin::telegram.telegramApiService')
+                            .sendMessage(this.bot, "", master.master_id, files)
+                    }
+                    const message = await strapi.service('plugin::telegram.telegramApiService')
+                        .sendMessage(this.bot, this.text, master.master_id, {}, this.keyboard)
+
+                    messages[master.master_id] = message.message_id
                 }
                 else {
-                    const message = await strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, textEnoughBalance, master.master_id, files, keyboardEnoughBalance)
-                    messages[message.chat.id] = message.message_id
+                    if (this.auctuionData.file) {
+                        await strapi.service('plugin::telegram.telegramApiService')
+                            .sendMessage(this.bot, "", master.master_id, files)
+                    }
+                    const message = await strapi.service('plugin::telegram.telegramApiService')
+                        .sendMessage(
+                            this.bot,
+                            this.textEnoughBalance,
+                            master.master_id, files,
+                            this.keyboardEnoughBalance
+                        )
+                    messages[master.master_id] = message.message_id
                 }
-
             }
-            catch (error) { 
-  
-            }
+            catch (error) {}
         }
 
         return messages

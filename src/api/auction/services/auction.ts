@@ -45,7 +45,10 @@ export default factories.createCoreService('api::auction.auction', ({ strapi }) 
         }
         let files = {}
         if (auction.file) {
-            files = { 0: `${process.cwd()}/public${auction.file.url}` }
+            for (let index = 0; index < auction.file.length; index++) {
+                const file = auction.file[index];
+                files[index] = `${process.cwd()}/public${file.url}`
+            }
         }
         const message = await strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, text, master.master_id, files)
 

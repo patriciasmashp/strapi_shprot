@@ -59,7 +59,7 @@ export class AuctionValidator {
 
     constructor(auctionData: AuctionData) {
         this.auctionData = auctionData;
-        this.predicates = [/*new LimiteClientAuctions()*/, new MasterForbiden()];
+        this.predicates = [/*new LimiteClientAuctions(),*/ new MasterForbiden()];
     }
 
     async validateBeforeCreate(): Promise<PredicateAnswer> {

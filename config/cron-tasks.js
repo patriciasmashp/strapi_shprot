@@ -55,7 +55,7 @@ module.exports = {
                 },
                 populate: ['client']
             })
-            console.log('auction');
+
             const auctionSettings = await strapi.service('api::bot-settings.bot-settings').getAuctionSettings()
 
             for (let auction of auctions) {
@@ -78,8 +78,8 @@ module.exports = {
 
         },
         options: {
-            // rule: "* 1 * * * *",
-            start: new Date(Date.now()),
+            rule: "* 2 * * * *",
+            // start: new Date(Date.now()),
             // end 20 seconds from now
             // end: new Date(Date.now()),
         },
