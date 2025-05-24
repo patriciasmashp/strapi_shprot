@@ -100,5 +100,5 @@ module.exports = createCoreController('api::auction.auction', ({ strapi }) => ({
 
     }, 
 
-
+ 
 }));
