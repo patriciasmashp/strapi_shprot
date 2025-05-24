@@ -41,7 +41,7 @@ module.exports = {
 
         },
         options: {
-            // rule: "0 0 0 * * 3",
+            rule: "0 0 0 * * 3",
             start: new Date(Date.now()),
             // end 20 seconds from now
             // end: new Date(Date.now()),
@@ -79,7 +79,7 @@ module.exports = {
         },
         options: {
             rule: "* 2 * * * *",
-            // start: new Date(Date.now()),
+            start: new Date(Date.now()),
             // end 20 seconds from now
             // end: new Date(Date.now()),
         },
