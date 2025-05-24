@@ -65,7 +65,10 @@ export class sketchAuction extends AbstractAuction implements IAuction {
                     messages[master.master_id] = message.message_id
                 }
             }
-            catch (error) {}
+            catch (error) {
+                console.log(error);
+                
+            }
         }
 
         return messages

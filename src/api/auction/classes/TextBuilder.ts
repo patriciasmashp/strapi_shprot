@@ -45,7 +45,7 @@ export default class AllertMasterTextBuilder {
     }
 
     private getMasterResponcePrice(masterPrice: number){
-        return `\nВы оценили в ${masterPrice}`
+        return `\nВы оценили в ${masterPrice} ₽`
     }
     public buildText(auctionCost: number): string {
         let text = ""

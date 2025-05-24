@@ -50,7 +50,7 @@ module.exports = createCoreController('api::auction.auction', ({ strapi }) => ({
             .findOne({ documentId: body.data.master })
 
         const auction = await strapi.documents('api::auction.auction')
-            .findOne({ documentId: params.id, populate: ["masterResponses", "masterResponses.master"] })
+            .findOne({ documentId: params.id, populate: ["masterResponses", "masterResponses.master", "city"] })
 
         const masterResponses = auction.masterResponses
 
@@ -79,7 +79,7 @@ module.exports = createCoreController('api::auction.auction', ({ strapi }) => ({
         }
 
         const auctionData = await strapi.documents('api::auction.auction')
-            .findOne({ documentId: auctionDocumentId, populate: ["client", "file", "masterResponses", "masterResponses.master"] })
+            .findOne({ documentId: auctionDocumentId, populate: ["client", "file", "masterResponses", "masterResponses.master", "city"] })
 
         const master = await strapi.documents('api::master.master')
             .findOne({ documentId: masterDocumentId })
