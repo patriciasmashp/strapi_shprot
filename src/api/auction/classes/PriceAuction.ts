@@ -13,16 +13,8 @@ export class PriceAuction extends AbstractAuction implements IAuction {
         super(auctuionData, settings)
         this.bot = new Bot(process.env.BOT_TOKEN)
         const price = this.settings.responce_price
-        this.text = "Дорогой мастер, мы нашли клиента c конкретным бюджетом," +
-            "\nты и другие мастера можете взяться за этот проект либо отказаться от него." +
-            "\nПользователь ознакомится портфолио c откликнувшихся мастеров и выберет наиболее подходящего ему мастера." +
-            `\n\nОписание аукциона: ${this.auctuionData.idea}` +
-            `\nБюджет: ${this.auctuionData.price} ₽` +
-            `\n\nСтоимость участия: ${price}`
-
-        this.textEnoughBalance = "Дорогой мастер, мы нашли клиента," +
-            " но к сожалению твой текущий баланс не позволит принять участие в тату-аукционе." +
-            "\nНо ты можешь ознакомиться с тем, как это исправить ниже нажав на кнопку."
+        this.text = this.textBuilder.buildText(price)
+        this.textEnoughBalance = this.textBuilder.buildEnoughBalanceText()
 
         this.keyboard = new InlineKeyboard().text("да", `auction_response_price_y_${this.auctuionData.documentId}`)
             .text("нет", `auction_price_n_${this.auctuionData.documentId}`).row()
@@ -71,7 +63,7 @@ export class PriceAuction extends AbstractAuction implements IAuction {
                     messages[master.master_id] = message.message_id
                 }
             }
-            catch (error) {}
+            catch (error) { }
         }
 
         return messages

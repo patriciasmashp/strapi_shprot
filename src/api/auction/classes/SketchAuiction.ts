@@ -14,16 +14,8 @@ export class sketchAuction extends AbstractAuction implements IAuction {
     constructor(auctuionData: Data.ContentType<'api::auction.auction'>, settings: AuctionSettings) {
         super(auctuionData, settings)
         const price = this.settings.responce_price
-        this.text = "Дорогой мастер, мы нашли клиента, ты и другие мастера можете оценить его идею." +
-            "\nТату-аукцион закрытый, поэтому не ставь очень низкую цену, оценивай реальную стоимость." +
-            "А пользователь выберет наиболее подходящего ему мастера." +
-            `\n\nОписание аукциона: ${this.auctuionData.idea}` +
-            `\n\nСтоимость участия: ${price}`
-
-        this.textEnoughBalance = "Дорогой мастер, мы нашли клиента," +
-            " но к сожалению твой текущий баланс не позволит принять участие в тату-аукционе." +
-            "\nНо ты можешь ознакомиться с тем, как это исправить ниже нажав на кнопку."
-
+        this.text = this.textBuilder.buildText(price)
+        this.textEnoughBalance = this.textBuilder.buildEnoughBalanceText()
         this.keyboard = new InlineKeyboard().text("да", `auction_response_price_y_${this.auctuionData.documentId}`)
             .text("нет", `auction_price_n_${this.auctuionData.documentId}`).row()
         this.keyboardEnoughBalance = new InlineKeyboard().text("Как пополнить баланас",

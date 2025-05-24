@@ -2,6 +2,7 @@ import { Data } from "@strapi/strapi";
 import { AuctionSettings, MessageIds } from "../Ifaces/IAuction";
 import { auctionQueue } from "./Queue";
 import { Bot, InlineKeyboard } from "grammy";
+import AllertMasterTextBuilder from "./TextBuilder";
 
 
 
@@ -9,10 +10,11 @@ export abstract class AbstractAuction {
 
     auctuionData: Data.ContentType<'api::auction.auction'>;
     settings: AuctionSettings
-
+    protected textBuilder: AllertMasterTextBuilder;
     constructor(auctuionData: Data.ContentType<'api::auction.auction'>, settings: AuctionSettings) {
         this.auctuionData = auctuionData;
         this.settings = settings;
+        this.textBuilder = new AllertMasterTextBuilder(auctuionData);
     }
     abstract alertMasters(): Promise<MessageIds>;
 

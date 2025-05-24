@@ -7,6 +7,7 @@ import { Data } from '@strapi/strapi';
 import { factories } from '@strapi/strapi';
 import { Bot } from 'grammy';
 import { AuctionTypesEnum } from '../Ifaces/IAuction';
+import AllertMasterTextBuilder from '../classes/TextBuilder';
 
 
 export default factories.createCoreService('api::auction.auction', ({ strapi }) => ({
@@ -33,16 +34,9 @@ export default factories.createCoreService('api::auction.auction', ({ strapi }) 
         }
         const response = auction.masterResponses.find(r => r.master.id === master.id)
         const bot = new Bot(process.env.BOT_TOKEN)
-        let text = await strapi.service('api::bot-text.bot-text').getText('auction_sent_contact_master')
-        text += `\n\nКонтакты клиента: @${auction.client.username}\nАукцион: ${auction.bodyPart}`
-        console.log(auction.type);
-        
-        if (auction.type === AuctionTypesEnum.priceAuction && auction.price) {
-         text += `\nБюджет: ${auction.price} ₽`   
-        }
-        else{
-            text += `\nВаша цена: ${response.price} ₽`
-        }
+        const textBuilder = new AllertMasterTextBuilder(auction)
+
+        const text = await textBuilder.getClientChoiceText(response.price)
         let files = {}
         if (auction.file) {
             for (let index = 0; index < auction.file.length; index++) {
