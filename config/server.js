@@ -21,5 +21,9 @@ module.exports = ({ env }) => ({
     port: 6379,
     maxRetriesPerRequest: null,
     connectTimeout: 180000
-  }
+  },
+  watchIgnoreFiles: [
+    '**/logs',
+    './logs'
+  ]
 });
