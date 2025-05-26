@@ -28,6 +28,7 @@ const checkAndCreateFile = (filePath) => {
 module.exports = createCoreController('api::admin.admin', ({ strapi }) => ({
     async logFrontendError(ctx) {
         const error = ctx.request.body.data
+        console.log(error);
         
         checkAndCreateFile('logs/frontEndLog.json');
         fs.appendFileSync('logs/frontEndLog.json', JSON.stringify(error));
