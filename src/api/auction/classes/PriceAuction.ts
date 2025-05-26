@@ -26,7 +26,7 @@ export class PriceAuction extends AbstractAuction implements IAuction {
         const rootDir = process.cwd();
         let files = {}
 
-        if (this.auctuionData.file.length != 0) {
+        if (this.auctuionData.file) {
             for (let index = 0; index < this.auctuionData.file.length; index++) {
                 const file = this.auctuionData.file[index];
                 files[index] = `${rootDir}/public${file.url}`
