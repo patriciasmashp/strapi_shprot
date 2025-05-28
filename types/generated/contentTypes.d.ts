@@ -436,14 +436,14 @@ export interface ApiAuctionAuction extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     size: Schema.Attribute.Enumeration<
       [
-        '\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F',
-        '\u0421\u0440\u0435\u0434\u043D\u044F\u044F',
-        '\u0411\u043E\u043B\u044C\u0448\u0430\u044F',
-        '\u0411\u043E\u043B\u044C\u0448\u043E\u0439 \u043F\u0440\u043E\u0435\u043A\u0442',
+        '\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F \u0434\u043E 10 \u0441\u043C',
+        '\u0421\u0440\u0435\u0434\u043D\u044F\u044F 10 - 15 \u0441\u043C',
+        '\u0411\u043E\u043B\u044C\u0448\u0430\u044F 15 - 20 \u0441\u043C',
+        '\u0411\u043E\u043B\u044C\u0448\u043E\u0439 \u043F\u0440\u043E\u0435\u043A\u0442 \u043E\u0442 20 \u0441\u043C',
       ]
     > &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F'>;
+      Schema.Attribute.DefaultTo<'\u041C\u0430\u043B\u0435\u043D\u044C\u043A\u0430\u044F \u0434\u043E 10 \u0441\u043C'>;
     type: Schema.Attribute.Enumeration<['sketchAuction', 'priceAuction']> &
       Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
