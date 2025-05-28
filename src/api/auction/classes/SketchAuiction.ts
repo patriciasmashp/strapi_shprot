@@ -16,7 +16,7 @@ export class sketchAuction extends AbstractAuction implements IAuction {
         const price = this.settings.responce_price
         this.text = this.textBuilder.buildText(price)
         this.textEnoughBalance = this.textBuilder.buildEnoughBalanceText()
-        this.keyboard = new InlineKeyboard().text("Участвовать в аукционе", `auction_response_price_y_${this.auctuionData.documentId}`)
+        this.keyboard = new InlineKeyboard().text("Участвовать в аукционе", `auction_response_sketch_y_${this.auctuionData.documentId}`)
             
         this.keyboardEnoughBalance = new InlineKeyboard().text("Как пополнить баланас",
             `auction_balance_help_${this.auctuionData.documentId}`)
