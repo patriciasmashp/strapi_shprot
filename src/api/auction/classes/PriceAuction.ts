@@ -16,8 +16,7 @@ export class PriceAuction extends AbstractAuction implements IAuction {
         this.text = this.textBuilder.buildText(price)
         this.textEnoughBalance = this.textBuilder.buildEnoughBalanceText()
 
-        this.keyboard = new InlineKeyboard().text("да", `auction_response_price_y_${this.auctuionData.documentId}`)
-            .text("нет", `auction_price_n_${this.auctuionData.documentId}`).row()
+        this.keyboard = new InlineKeyboard().text("Участвовать в аукционе", `auction_response_price_y_${this.auctuionData.documentId}`)
         this.keyboardEnoughBalance = new InlineKeyboard().text("Как пополнить баланас",
             `auction_balance_help_${this.auctuionData.documentId}`)
     }
