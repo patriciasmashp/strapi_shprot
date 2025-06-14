@@ -830,7 +830,8 @@ export interface ApiMasterMaster extends Struct.CollectionTypeSchema {
         i18n: {
           localized: false;
         };
-      }>;
+      }> &
+      Schema.Attribute.DefaultTo<0>;
     requestCount: Schema.Attribute.Integer &
       Schema.Attribute.Private &
       Schema.Attribute.SetPluginOptions<{

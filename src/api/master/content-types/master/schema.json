@@ -214,7 +214,8 @@
           "localized": false
         }
       },
-      "type": "float"
+      "type": "float",
+      "default": 0
     },
     "auctionCount": {
       "pluginOptions": {
