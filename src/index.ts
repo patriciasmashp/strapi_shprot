@@ -2,7 +2,7 @@
 
 
 import { Worker } from 'bullmq';
-import { Bot } from 'grammy';
+import { Bot, InlineKeyboard } from 'grammy';
 
 export default {
   /**
@@ -23,6 +23,7 @@ export default {
       for (let tgId in job.data.messages) {
         try {
           const deleted = await bot.api.deleteMessage(tgId, job.data.messages[tgId])
+
         } catch (error) { }
       }
 
@@ -33,16 +34,20 @@ export default {
     });
 
 
-    worker.on('completed', job => {
+    worker.on('completed', async (job) => {
       const auction = job.data.auctuion
 
-      strapi.documents('api::auction.auction').update({
+      await strapi.documents('api::auction.auction').update({
         documentId: auction.documentId, data: {
           finished: true
         }
-      }).then((response) => {
-        console.log(`auction finished. task id: ${job.id}`)
       })
+      const bot = new Bot(process.env.BOT_TOKEN)
+      const text = await strapi.service('api::bot-text.bot-text').getText('auction_finished')
+      const keyboard = new InlineKeyboard().webApp("Посмотреть", `${process.env.WEB_APP_URL}/auction`)
+      await strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, text, job.data.auctuion.client.client_id, {}, keyboard)
+      console.log(`auction finished. task id: ${job.id}`)
+
 
     });
 
