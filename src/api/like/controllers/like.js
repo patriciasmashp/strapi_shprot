@@ -9,7 +9,6 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::like.like', {
     async create(ctx) {
         const responseData = ctx.request.body.data;
-        console.log(responseData);
         const likeData = await strapi.documents('api::like.like').findFirst({
             filters: {
                 $and: [
