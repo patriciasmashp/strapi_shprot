@@ -31,7 +31,7 @@
       ],
       "default": "Звонок"
     },
-    "phone": {
+    "contact": {
       "type": "string",
       "required": true
     },

@@ -911,6 +911,7 @@ export interface ApiRequestRequest extends Struct.CollectionTypeSchema {
   };
   attributes: {
     client: Schema.Attribute.Relation<'oneToOne', 'api::client.client'>;
+    contact: Schema.Attribute.String & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -921,7 +922,6 @@ export interface ApiRequestRequest extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     master: Schema.Attribute.Relation<'oneToOne', 'api::master.master'>;
-    phone: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     received: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     TypeOfRequest: Schema.Attribute.Enumeration<
