@@ -8,7 +8,7 @@ const telegramApiService = ({ strapi }) => ({
 
     if (Object.keys(files).length > 0) {
       if (Object.keys(files).length == 1) {
-        const file = new InputFile(files[0])
+        const file = typeof files[0] === 'string' ? files[0] : new InputFile(files[0])
         const success = await bot.api.sendPhoto(chatId, file, {
           caption: message,
           reply_markup: keyboard,
@@ -21,15 +21,15 @@ const telegramApiService = ({ strapi }) => ({
 
         Object.values(files).forEach(file => {
           // if (file.mimetype.startsWith('image')) {
-            const media = InputMediaBuilder.photo(new InputFile(file))
+            const media = typeof file === 'string' ? InputMediaBuilder.photo(file) : InputMediaBuilder.photo(new InputFile(file))
             medias.push(media)
           // }
           // else if (file.mimetype.startsWith('video')) {
-          //   const media = InputMediaBuilder.video(new InputFile(file))
+          //   const media = typeof file === 'string' ? InputMediaBuilder.video(file) : InputMediaBuilder.video(new InputFile(file))
           //   medias.push(media)
           // }
           // else {
-          //   const media = InputMediaBuilder.document(new InputFile(file))
+          //   const media = typeof file === 'string' ? InputMediaBuilder.document(file) : InputMediaBuilder.document(new InputFile(file))
           //   medias.push(media)
           // }
         });
@@ -53,6 +53,18 @@ const telegramApiService = ({ strapi }) => ({
       })
       return success
     }
+  },
+  async broadcast(bot, message, chatsID, files = {}, keyboard = null) {
+    const results = [];
+    for (const chatId of chatsID) {
+      try {
+        const result = await this.sendMessage(bot, message, chatId, files, keyboard);
+        results.push({ chatId, success: true, result });
+      } catch (error) {
+        results.push({ chatId, success: false, error });
+      }
+    }
+    return results;
   }
 }
 );
