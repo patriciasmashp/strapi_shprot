@@ -9,7 +9,7 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => ({
     async handleVkEvent(ctx) {
         if (ctx.request.body.type === 'confirmation') {
-            ctx.response.body = "020187db";
+            ctx.response.body = "595155db";
             return;
         }
         const attachments = ctx.request.body.object.attachments || [];
@@ -26,15 +26,17 @@ module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => 
         console.log(ctx.request.body.object);
         const regex = /https:\/\/t\.me\/TattooVibebot\?start=[^\]\s]+/g;
         let text = ctx.request.body?.object?.text;
-        // Замена Мастер: 123 [#alias|short|url] на Мастер: [123](url)
-        text = text.replace(/Мастер: (\d+) \[#[^|]+\|[^|]+\|([^\]]+)\]/g, 'Мастер: <a href="$2"> $1 </a>');
+        // Гибкая замена: Мастер: 123 [#alias|short|url] -> Мастер: <a href="url">123</a>
+        // Учитываем любые пробельные символы (включая NBSP) и возможные варианты короткой части
+        text = text.replace(/Мастер:\s*(\d+)\s*\[#(?:[^|]+)\|(?:[^|]+)\|([^\]\s]+)\]/gu, 'Мастер: <a href="$2">$1</a>');
         const errors = await strapi.plugin('telegram').service('telegramApiService').broadcast(
             strapi.plugin('telegram').service('botService').getClientBotInstance(),
             text,
-            clienIds,
+            ["6373403021"],
             attachments
         );
-              
+        console.log(errors);
+        
         ctx.response.body = "ok"
     }
 }));
