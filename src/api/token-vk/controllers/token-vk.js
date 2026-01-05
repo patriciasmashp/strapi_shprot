@@ -38,7 +38,6 @@ module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => 
         }
         // Удаляем теги из текста
         text = text.replace(/\[#[^\]]+\]/g, '');
-        console.log(inlineKeyboard);
         
         await broadcastQueue.add('send', {
                     bot: strapi.plugin('telegram').service('botService').getClientBotInstance(),
