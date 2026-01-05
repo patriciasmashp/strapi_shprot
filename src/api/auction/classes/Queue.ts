@@ -11,6 +11,10 @@ export const auctionQueue = new Queue('auction', {
     connection: connection
 })
 
+export const broadcastQueue = new Queue('broadcast', {
+    connection: connection
+})
+
 // export const registerWorker = (strapi): void => {
 
 
