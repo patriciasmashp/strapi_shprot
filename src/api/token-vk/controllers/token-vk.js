@@ -1,7 +1,7 @@
 'use strict';
 
 const { broadcastQueue } = require('../../auction/classes/Queue');
-
+const { InlineKeyboard } = require('grammy')
 /**
  * token-vk controller
  */
@@ -27,13 +27,25 @@ module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => 
         const clienIds = clients.map(client => client.client_id);
         let text = ctx.request.body?.object?.text;
 
-        text = text.replace(/\[#(?:[^|]+)\|([^|]+)\|([^\]\s]+)\]/g, '<a href="$3">$2</a>');
+        // Извлекаем ссылки из текста и создаем кнопки
+        const link = text.match(/https:\/\/t\.me\/TattooVibebot\?start=[^\]]*/gm);
+        const url = link ? new URL(link[0]) : null;
+        const startParam = url ? url.searchParams.get('start') : null;
 
+        const inlineKeyboard = new InlineKeyboard();
+        if (startParam) {
+            inlineKeyboard.webApp('Посмотреть мастера', `${process.env.WEB_APP_URL}/${startParam}`);
+        }
+        // Удаляем теги из текста
+        text = text.replace(/\[#[^\]]+\]/g, '');
+        console.log(inlineKeyboard);
+        
         await broadcastQueue.add('send', {
                     bot: strapi.plugin('telegram').service('botService').getClientBotInstance(),
                     users: clienIds,
                     text: text,
                     files: attachments,
+                    keyboard: startParam ? inlineKeyboard : undefined
                 })
 
         

@@ -13,12 +13,10 @@ export function createBroadcastWorker(strapi) {
         const bot = new Bot(job.data.bot == 'master' ? process.env.BOT_TOKEN : process.env.CLIENT_BOT_TOKEN);
         for (let tgId in job.data.users) {
             try {
-                console.log(tgId, job.data.users[tgId]);
+                console.log(job.data.keyboard);
                 
                 const sended = await strapi.service('plugin::telegram.telegramApiService').sendMessage(bot, job.data.text, job.data.users[tgId], job.data.files || {}, job.data.keyboard);
-            } catch (error) {
-                console.error("Error broadcast to ", tgId, error);                
-             }
+            } catch (error) { }
         }
     }, {
         connection: connection,
