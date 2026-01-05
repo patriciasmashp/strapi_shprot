@@ -21,8 +21,8 @@ const telegramApiService = ({ strapi }) => ({
 
         Object.values(files).forEach(file => {
           // if (file.mimetype.startsWith('image')) {
-            const media = typeof file === 'string' ? InputMediaBuilder.photo(file) : InputMediaBuilder.photo(new InputFile(file))
-            medias.push(media)
+          const media = typeof file === 'string' ? InputMediaBuilder.photo(file) : InputMediaBuilder.photo(new InputFile(file))
+          medias.push(media)
           // }
           // else if (file.mimetype.startsWith('video')) {
           //   const media = typeof file === 'string' ? InputMediaBuilder.video(file) : InputMediaBuilder.video(new InputFile(file))
@@ -33,13 +33,25 @@ const telegramApiService = ({ strapi }) => ({
           //   medias.push(media)
           // }
         });
+        console.log(keyboard);
 
-        medias[0].caption = message
-        medias[0].parse_mode = "HTML"
-        // medias[0].reply_markup = keyboard
-
+        if (keyboard === null) {
+          medias[0].caption = message
+          medias[0].parse_mode = "HTML"
+          medias[0].reply_markup = keyboard
 
         const success = await bot.api.sendMediaGroup(chatId, medias)
+        }
+        else {
+          // If keyboard is provided, we can only attach it to the first media
+          medias[0].parse_mode = "HTML"
+          medias[0].reply_markup = keyboard
+          const success = await bot.api.sendMediaGroup(chatId, medias)
+          await bot.api.sendMessage(chatId, message, {
+            parse_mode: 'HTML',
+            reply_markup: keyboard
+          })
+        }
 
         return success
 
