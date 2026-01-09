@@ -11,7 +11,11 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => ({
     async handleVkEvent(ctx) {
         if (ctx.request.body.type === 'confirmation') {
-            ctx.response.body = "0a2a5b05";
+            ctx.response.body = "5685de28";
+            return;
+        }
+        if (ctx.request.body.type !== 'wall_post_new' || ctx.request.body.object.post_type !== 'post') {
+            ctx.response.body = "ok"
             return;
         }
         const attachments = ctx.request.body.object.attachments || [];
@@ -34,7 +38,7 @@ module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => 
 
         const inlineKeyboard = new InlineKeyboard();
         if (startParam) {
-            inlineKeyboard.webApp('Посмотреть мастера', `${process.env.WEB_APP_URL}/${startParam}`);
+            inlineKeyboard.webApp('Посмотреть мастера', `${process.env.WEB_APP_URL}${startParam}`);
         }
         // Удаляем теги из текста
         text = text.replace(/\[#[^\]]+\]/g, '');
