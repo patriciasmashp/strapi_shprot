@@ -38,7 +38,7 @@ module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => 
 
         const inlineKeyboard = new InlineKeyboard();
         if (startParam) {
-            inlineKeyboard.webApp('Посмотреть мастера', `${process.env.WEB_APP_URL}${startParam}`);
+            inlineKeyboard.webApp('Посмотреть мастера', `${process.env.WEB_APP_URL}/${startParam}`);
         }
         // Удаляем теги из текста
         text = text.replace(/\[#[^\]]+\]/g, '');

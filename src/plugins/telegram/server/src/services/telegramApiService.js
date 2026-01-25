@@ -1,6 +1,7 @@
 const { Bot } = require('grammy')
 const { InputFile } = require('grammy')
 const { InputMediaBuilder } = require('grammy')
+const fs = require('fs')
 
 const telegramApiService = ({ strapi }) => ({
   async sendMessage(bot, message, chatId, files = {}, keyboard = null) {
@@ -8,7 +9,7 @@ const telegramApiService = ({ strapi }) => ({
 
     if (Object.keys(files).length > 0) {
       if (Object.keys(files).length == 1) {
-        const file = typeof files[0] === 'string' ? files[0] : new InputFile(files[0])
+        const file = typeof files[0] === 'string' ? new InputFile(fs.readFileSync(files[0])) : new InputFile(files[0])
         const success = await bot.api.sendPhoto(chatId, file, {
           caption: message,
           reply_markup: keyboard,
@@ -20,20 +21,10 @@ const telegramApiService = ({ strapi }) => ({
         let medias = []
 
         Object.values(files).forEach(file => {
-          // if (file.mimetype.startsWith('image')) {
-          const media = typeof file === 'string' ? InputMediaBuilder.photo(file) : InputMediaBuilder.photo(new InputFile(file))
+
+          const media = typeof file === 'string' ? InputMediaBuilder.photo(fs.readFileSync(file)) : InputMediaBuilder.photo(new InputFile(file))
           medias.push(media)
-          // }
-          // else if (file.mimetype.startsWith('video')) {
-          //   const media = typeof file === 'string' ? InputMediaBuilder.video(file) : InputMediaBuilder.video(new InputFile(file))
-          //   medias.push(media)
-          // }
-          // else {
-          //   const media = typeof file === 'string' ? InputMediaBuilder.document(file) : InputMediaBuilder.document(new InputFile(file))
-          //   medias.push(media)
-          // }
         });
-        console.log(keyboard);
 
         if (keyboard === null) {
           medias[0].caption = message
