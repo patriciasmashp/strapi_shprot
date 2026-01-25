@@ -11,7 +11,7 @@ const { createCoreController } = require('@strapi/strapi').factories;
 module.exports = createCoreController('api::token-vk.token-vk', ({ strapi }) => ({
     async handleVkEvent(ctx) {
         if (ctx.request.body.type === 'confirmation') {
-            ctx.response.body = "5685de28";
+            ctx.response.body = "a5f7f3f0";
             return;
         }
         if (ctx.request.body.type !== 'wall_post_new' || ctx.request.body.object.post_type !== 'post') {

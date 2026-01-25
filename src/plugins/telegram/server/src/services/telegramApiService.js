@@ -3,13 +3,22 @@ const { InputFile } = require('grammy')
 const { InputMediaBuilder } = require('grammy')
 const fs = require('fs')
 
+const isUrl = (string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
 const telegramApiService = ({ strapi }) => ({
   async sendMessage(bot, message, chatId, files = {}, keyboard = null) {
 
 
     if (Object.keys(files).length > 0) {
       if (Object.keys(files).length == 1) {
-        const file = typeof files[0] === 'string' ? new InputFile(fs.readFileSync(files[0])) : new InputFile(files[0])
+        const file = typeof files[0] === 'string' ? (isUrl(files[0]) ? files[0] : new InputFile(fs.readFileSync(files[0]))) : new InputFile(files[0])
         const success = await bot.api.sendPhoto(chatId, file, {
           caption: message,
           reply_markup: keyboard,
@@ -22,7 +31,7 @@ const telegramApiService = ({ strapi }) => ({
 
         Object.values(files).forEach(file => {
 
-          const media = typeof file === 'string' ? InputMediaBuilder.photo(fs.readFileSync(file)) : InputMediaBuilder.photo(new InputFile(file))
+          const media = typeof file === 'string' ? (isUrl(file) ? InputMediaBuilder.photo(file) : InputMediaBuilder.photo(fs.readFileSync(file))) : InputMediaBuilder.photo(new InputFile(file))
           medias.push(media)
         });
 
